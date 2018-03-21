@@ -7,6 +7,7 @@ import 'normalize.css'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import './assets/common.styl'
+// import store from './store'
 
 // import Element from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'

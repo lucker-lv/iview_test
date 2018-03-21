@@ -49,11 +49,11 @@
             :style="{height:'100%', overflowY: 'auto'}">
             <MenuItem name="/"> 首页
             </MenuItem>
-            <MenuItem name="/companyInfo">
             <!-- <router-link to="/companyInfo">公司介绍</router-link> -->
-            公司介绍
-            </MenuItem>
-            <MenuItem name="1-3">Option 3</MenuItem>
+            <MenuItem name="/companyInfo">公司介绍</MenuItem>
+            <MenuItem name="/companyInfo2">公司介绍2</MenuItem>
+            <MenuItem name="/companyInfo3">公司介绍3</MenuItem>
+            <MenuItem name="/companyInfo4">公司介绍4</MenuItem>
             <Submenu name="2">
               <template slot="title">
                 <Icon type="ios-keypad"></Icon>
@@ -77,37 +77,38 @@
             <Tabs type="card"
               closable
               :style="{padding: '0 0 15px'}"
-              :value="curName"
-              @on-tab-remove="handleTabRemove">
+              :value="$route.path"
+              @on-tab-remove="handleTabRemove"
+              @on-click="route">
               <TabPane v-for="tab in showTabs"
                 :key="tab.name"
                 :name="tab.name"
                 :closable="tab.closable"
-                :label="tab.name">
-                {{ tab.name }}
+                :label="tab.label">
+                <!-- {{ tab.name }} -->
               </TabPane>
               <Button type="ghost"
                 @click="handleTabsAdd"
                 size="small"
                 slot="extra">增加</Button>
             </Tabs>
+
             <Breadcrumb :style="{margin: '24px 0'}">
               <BreadcrumbItem>Home</BreadcrumbItem>
               <BreadcrumbItem>Components</BreadcrumbItem>
               <BreadcrumbItem>Layout</BreadcrumbItem>
             </Breadcrumb>
-            <keep-alive>
-              <router-view/>
-            </keep-alive>
 
             <!-- <keep-alive>
-              <router-view v-if="$route.meta.keepAlive">
-                这里是会被缓存的视图组件，比如 Home！
+              <router-view/>
+            </keep-alive> -->
+
+            <keep-alive>
+              <router-view :key="$route.path" v-if="$route.meta.keepAlive">
               </router-view>
             </keep-alive>
-            <router-view v-if="!$route.meta.keepAlive">
-              这里是不被缓存的视图组件，比如 Edit！
-            </router-view> -->
+            <router-view :key="$route.path" v-if="!$route.meta.keepAlive">
+            </router-view>
 
           </Content>
           <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
@@ -130,13 +131,13 @@ export default {
       isCollapsed: false,
       tabs: [
         {
-          name: '首页',
+          label: '首页',
+          name: '/',
           show: true,
           closable: false
         }
       ],
-      tabIndex: 1,
-      curName: '首页'
+      tabIndex: 1
     }
   },
   computed: {
@@ -152,24 +153,52 @@ export default {
       return this.$route.path
     }
   },
-  mounted () {},
+  mounted () {
+    if (this.$route.name !== this.curName) {
+      this.handleTabsAdd()
+    }
+  },
+  watch: {
+    $route () {
+      this.handleTabsAdd()
+    }
+  },
   methods: {
     handleTabsAdd () {
+      console.log(this.$route.path)
+      var index = this.tabs.findIndex((value, index, arr) => value.name === this.$route.path)
+
+      console.log(index)
+
+      if (index > -1) {
+        return
+      }
+
       this.tabs.push({
-        name: '标签' + this.tabIndex++,
-        show: true
+        name: this.$route.path,
+        show: true,
+        label: this.$route.meta.label
       })
-      this.curName = '标签' + (this.tabIndex - 1)
     },
     handleTabRemove (name) {
+      var tabIndex = 0
       this.tabs.forEach((item, index) => {
         if (item.name === name) {
           item.show = false
+          tabIndex = index
         }
       })
+      this.tabs.splice(tabIndex, 1)
+
+      if (name === this.$route.path) {
+        router.push(this.tabs[tabIndex - 1].name)
+      }
     },
     route (name) {
       router.push(name)
+    },
+    isActive (route) {
+      return route.path === this.$route.path
     }
   },
   components: {}
