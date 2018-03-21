@@ -126,7 +126,7 @@ export default {
   data () {
     return {
       // menuActiveName: '/',
-      value: [20, 50],
+      value: [20, 40],
       isCollapsed: false,
       tabs: [
         {
