@@ -28,29 +28,21 @@ export default new Router({
     {
       path: '/companyInfo2',
       name: 'PageCompanyInfo2',
-      component: resolve => require(['@/pages/PageCompanyInfo'], resolve),
+      component: resolve => require(['@/pages/PageCompanyInfo2'], resolve),
       meta: {
         keepAlive: true,
         label: '公司介绍2'
       }
     },
     {
-      path: '/companyInfo3',
-      name: 'PageCompanyInfo3',
-      component: resolve => require(['@/pages/PageCompanyInfo'], resolve),
+      path: '/about/:id',
+      name: 'PageAbout',
+      component: resolve => require(['@/pages/PageAbout'], resolve),
       meta: {
         keepAlive: true,
-        label: '公司介绍3'
-      }
-    },
-    {
-      path: '/companyInfo4',
-      name: 'PageCompanyInfo4',
-      component: resolve => require(['@/pages/PageCompanyInfo'], resolve),
-      meta: {
-        keepAlive: true,
-        label: '公司介绍4'
-      }
+        label: '关于'
+      },
+      props: true
     },
     {
       path: '/element',

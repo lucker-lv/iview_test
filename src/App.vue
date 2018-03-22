@@ -52,23 +52,13 @@
             <!-- <router-link to="/companyInfo">公司介绍</router-link> -->
             <MenuItem name="/companyInfo">公司介绍</MenuItem>
             <MenuItem name="/companyInfo2">公司介绍2</MenuItem>
-            <MenuItem name="/companyInfo3">公司介绍3</MenuItem>
-            <MenuItem name="/companyInfo4">公司介绍4</MenuItem>
             <Submenu name="2">
               <template slot="title">
                 <Icon type="ios-keypad"></Icon>
                 Item 2
               </template>
-              <MenuItem name="2-1">Option 1</MenuItem>
-              <MenuItem name="2-2">Option 2</MenuItem>
-            </Submenu>
-            <Submenu name="3">
-              <template slot="title">
-                <Icon type="ios-analytics"></Icon>
-                Item 3
-              </template>
-              <MenuItem name="3-1">Option 1</MenuItem>
-              <MenuItem name="3-2">Option 2</MenuItem>
+              <MenuItem name="/about/1">关于1</MenuItem>
+              <MenuItem name="/about/2">关于2</MenuItem>
             </Submenu>
           </Menu>
         </Sider>
@@ -76,21 +66,17 @@
           <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
             <Tabs type="card"
               closable
-              :style="{padding: '0 0 15px'}"
+              class="tabs-menu"
               :value="$route.path"
               @on-tab-remove="handleTabRemove"
               @on-click="route">
-              <TabPane v-for="tab in showTabs"
+              <TabPane v-for="tab in options"
                 :key="tab.name"
                 :name="tab.name"
                 :closable="tab.closable"
                 :label="tab.label">
                 <!-- {{ tab.name }} -->
               </TabPane>
-              <Button type="ghost"
-                @click="handleTabsAdd"
-                size="small"
-                slot="extra">增加</Button>
             </Tabs>
 
             <Breadcrumb :style="{margin: '24px 0'}">
@@ -99,16 +85,16 @@
               <BreadcrumbItem>Layout</BreadcrumbItem>
             </Breadcrumb>
 
-            <!-- <keep-alive>
-              <router-view/>
-            </keep-alive> -->
+            <keep-alive :include="pagesArr">
+              <router-view :key="$route.path"/>
+            </keep-alive>
 
-            <keep-alive>
+            <!-- <keep-alive :include="pagesArr">
               <router-view :key="$route.path" v-if="$route.meta.keepAlive">
               </router-view>
             </keep-alive>
             <router-view :key="$route.path" v-if="!$route.meta.keepAlive">
-            </router-view>
+            </router-view> -->
 
           </Content>
           <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
@@ -119,89 +105,55 @@
 </template>
 
 <script>
-// import LayoutUI from '@/components/LayoutUI'
-import router from './router'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
   data () {
     return {
-      // menuActiveName: '/',
       value: [20, 40],
-      isCollapsed: false,
-      tabs: [
-        {
-          label: '首页',
-          name: '/',
-          show: true,
-          closable: false
-        }
-      ],
-      tabIndex: 1
+      isCollapsed: false
     }
   },
   computed: {
+    ...mapGetters({
+      options: 'options',
+      deleteIndex: 'deleteIndex',
+      pagesArr: 'pagesArr'
+    }),
     menuitemClasses: function () {
       return ['menu-item', this.isCollapsed ? 'collapsed-menu' : '']
-    },
-    showTabs: function () {
-      return this.tabs.filter(function (item) {
-        return item.show === true
-      })
     },
     menuActiveName: function () {
       return this.$route.path
     }
   },
-  mounted () {
-    if (this.$route.name !== this.curName) {
-      this.handleTabsAdd()
-    }
-  },
   watch: {
-    $route () {
-      this.handleTabsAdd()
+    $route (to) {
+      let index = this.options.findIndex((value, index) => value.name === to.path)
+
+      if (index === -1) {
+        this.$store.dispatch('add_tabs', {
+          tab: {
+            name: to.path,
+            label: to.meta.label
+          },
+          componentName: to.name
+        })
+      }
     }
   },
   methods: {
-    handleTabsAdd () {
-      console.log(this.$route.path)
-      var index = this.tabs.findIndex((value, index, arr) => value.name === this.$route.path)
-
-      console.log(index)
-
-      if (index > -1) {
-        return
-      }
-
-      this.tabs.push({
-        name: this.$route.path,
-        show: true,
-        label: this.$route.meta.label
-      })
-    },
     handleTabRemove (name) {
-      var tabIndex = 0
-      this.tabs.forEach((item, index) => {
-        if (item.name === name) {
-          item.show = false
-          tabIndex = index
-        }
-      })
-      this.tabs.splice(tabIndex, 1)
-
+      this.$store.dispatch('delete_tab', name)
       if (name === this.$route.path) {
-        router.push(this.tabs[tabIndex - 1].name)
+        this.$router.push(this.options[this.deleteIndex - 1].name)
       }
     },
     route (name) {
-      router.push(name)
-    },
-    isActive (route) {
-      return route.path === this.$route.path
+      this.$router.push(name)
     }
-  },
-  components: {}
+  }
 }
 </script>
 
@@ -270,6 +222,12 @@ export default {
 
 .ivu-menu-vertical.ivu-menu-light:after
   display none
+
+.tabs-menu
+  /deep/ .ivu-tabs-bar
+    margin-bottom 0
+    + .ivu-tabs-content
+      display none
 
 .ivu-layout-footer
   text-align center

@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'PageHome',
   data () {
     return {
       columns1: [
