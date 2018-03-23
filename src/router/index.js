@@ -4,7 +4,7 @@ import LayoutUI from '@/components/LayoutUI'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   linkActiveClass: 'nav-active',
   routes: [
     {
@@ -51,3 +51,24 @@ export default new Router({
     }
   ]
 })
+
+// const pageDatas = []
+
+// router.afterEach((to, from) => {
+//   // console.log(from.matched[0].instances.default.$data)
+//   // console.log(from)
+//   let data = from.matched[0] && from.matched[0].instances && from.matched[0].instances.default && from.matched[0].instances.default.$data
+//   // pageDatas.push({
+//   //   path: from.path,
+//   //   data: data
+//   // })
+//   localStorage.setItem(from.path, JSON.stringify(data))
+
+//   // to.name
+//   // console.log('to: ', to)
+//   // console.log(to.matched[0] && to.matched[0].instances && to.matched[0].instances.default && to.matched[0].instances.default._data)
+
+//   // next()
+// })
+
+export default router

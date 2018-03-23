@@ -85,9 +85,9 @@
               <BreadcrumbItem>Layout</BreadcrumbItem>
             </Breadcrumb>
 
-            <keep-alive :include="pagesArr">
+            <!-- <keep-alive :include="pagesArr"> -->
               <router-view :key="$route.path"/>
-            </keep-alive>
+            <!-- </keep-alive> -->
 
             <!-- <keep-alive :include="pagesArr">
               <router-view :key="$route.path" v-if="$route.meta.keepAlive">
@@ -118,7 +118,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'options',
-      // deleteIndex: 'deleteIndex',
+      deleteIndex: 'deleteIndex',
       pagesArr: 'pagesArr'
     }),
     menuitemClasses: function () {
@@ -131,24 +131,23 @@ export default {
   watch: {
     $route (to) {
       let index = this.options.findIndex((value, index) => value.name === to.path)
-
+      // console.log(this.$store.state)
       if (index === -1) {
         this.$store.dispatch('add_tabs', {
           tab: {
             name: to.path,
             label: to.meta.label
-          },
-          componentName: to.name
+          }
         })
       }
     }
   },
   methods: {
     handleTabRemove (name) {
-      if (name === this.$route.path) {
-        this.$router.push(this.options[this.options.length - 2].name)
-      }
       this.$store.dispatch('delete_tab', name)
+      if (name === this.$route.path) {
+        this.$router.push(this.options[this.deleteIndex - 1].name)
+      }
     },
     route (name) {
       this.$router.push(name)

@@ -4,7 +4,7 @@
     <count></count>
     <Row :gutter="20">
       <Col span="8">
-      <Input v-model="value1"
+      <Input v-model="value"
         size="large"
         placeholder="large size"></Input>
       </Col>
@@ -23,6 +23,7 @@
 
 <script>
 import count from '@/components/count'
+
 export default {
   name: 'PageCompanyInfo2',
   data () {
@@ -30,6 +31,16 @@ export default {
       value1: '',
       value2: '',
       value3: ''
+    }
+  },
+  computed: {
+    value: {
+      get () {
+        return this.$store.state.test.value
+      },
+      set (value) {
+        this.$store.commit('updateValue', value)
+      }
     }
   },
   components: {

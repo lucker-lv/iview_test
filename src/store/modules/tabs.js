@@ -2,17 +2,20 @@ const state = {
   options: [{
     label: '首页',
     name: '/',
-    closable: false
+    closable: false,
+    data: {}
   }],
   deleteIndex: '',
   pagesArr: ['PageHome'],
+  fromTabPath: '',
   userInfo: {}
 }
 
 const getters = {
   options: state => state.options,
   deleteIndex: state => state.deleteIndex,
-  pagesArr: state => state.pagesArr
+  pagesArr: state => state.pagesArr,
+  fromTabPath: state => state.fromTabPath
 }
 
 const actions = {
@@ -27,7 +30,14 @@ const actions = {
     commit('set_delete_index', index)
     commit('delete_tab')
     commit('delete_cache_page')
+    // 删除相同组件不同实例的localstorage数据
+    deleteLCCachePage(route)
   }
+}
+
+let deleteLCCachePage = (route) => {
+  localStorage.removeItem(route)
+  alert('remove')
 }
 
 const mutations = {
@@ -52,6 +62,9 @@ const mutations = {
   // 设置详情信息
   save_detail_info (state, info) {
     state.userInfo = info
+  },
+  set_from_tab_path (state, path) {
+    state.fromTabPath = path
   }
 }
 
