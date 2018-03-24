@@ -181,7 +181,6 @@ export default {
       this.$store.dispatch('delete_tab', name)
     },
     route (name) {
-      console.log(name)
       this.$router.push(name)
     }
   }
