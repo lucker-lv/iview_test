@@ -7,6 +7,11 @@
           theme="dark"
           active-name="1">
           <div class="layout-logo"></div>
+          <!-- <Icon @click.native="collapsedSider"
+            :class="rotateIcon"
+            :style="{margin: '20px 20px 0',float: 'left'}"
+            type="navicon-round"
+            size="24"></Icon> -->
           <div class="layout-nav">
             <MenuItem name="1">
             <Icon type="ios-navigate"></Icon>
@@ -21,18 +26,8 @@
             Item 3
             </MenuItem>
             <MenuItem name="4">
-              <Dropdown placement="bottom-end" @on-click='route'>
-                <a href="javascript:void(0)">
-                  {{userName}}
-                  <Icon type="arrow-down-b"></Icon>
-                </a>
-                <DropdownMenu slot="list">
-                  <DropdownItem name='/personalInfo'>个人中心</DropdownItem>
-                  <DropdownItem divided name='/logout'>退出</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-              <Avatar :style="{marginLeft: '10px'}" :src="avatar"
-                size="small" />
+            <Icon type="ios-paper"></Icon>
+            Item 4
             </MenuItem>
           </div>
         </Menu>
@@ -40,7 +35,7 @@
       <Layout>
         <Sider ref="leftNav"
           collapsible
-          :collapsed-width="0"
+          :collapsed-width="60"
           breakpoint="md"
           v-model="isCollapsed"
           :style="{background: '#fff', borderRight:'1px solid #dddee1'}">
@@ -53,17 +48,17 @@
             @on-select="route"
             :style="{height:'100%', overflowY: 'auto'}">
             <MenuItem name="/">
-            <Icon type="ios-navigate"></Icon>
-            <span>首页</span>
+              <Icon type="ios-navigate"></Icon>
+              <span>首页</span>
             </MenuItem>
             <!-- <router-link to="/companyInfo">公司介绍</router-link> -->
             <MenuItem name="/companyInfo">
-            <Icon type="ios-navigate"></Icon>
-            <span>公司介绍</span>
+              <Icon type="ios-navigate"></Icon>
+              <span>公司介绍</span>
             </MenuItem>
             <MenuItem name="/companyInfo2">
-            <Icon type="ios-navigate"></Icon>
-            <span>公司介绍2</span>
+              <Icon type="ios-navigate"></Icon>
+              <span>公司介绍2</span>
             </MenuItem>
             <Submenu name="2">
               <template slot="title">
@@ -71,27 +66,27 @@
                 <span>Item 2</span>
               </template>
               <MenuItem name="/about/1">
-              <Icon type="ios-keypad"></Icon>
-              <span>关于1</span>
+                <Icon type="ios-keypad"></Icon>
+                <span>关于1</span>
               </MenuItem>
               <MenuItem name="/about/2">
-              <Icon type="ios-keypad"></Icon>
-              <span>关于2</span>
+                <Icon type="ios-keypad"></Icon>
+                <span>关于2</span>
               </MenuItem>
             </Submenu>
             <MenuItem name="/personalInfo">
-            <Icon type="ios-keypad"></Icon>
-            <span>个人中心</span>
+              <Icon type="ios-keypad"></Icon>
+              <span>个人中心</span>
             </MenuItem>
           </Menu>
         </Sider>
         <Layout>
           <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
-            <!-- <Breadcrumb :style="{marginBottom: '20px'}">
+            <Breadcrumb :style="{marginBottom: '20px'}">
               <BreadcrumbItem>Home</BreadcrumbItem>
               <BreadcrumbItem>Components</BreadcrumbItem>
               <BreadcrumbItem>Layout</BreadcrumbItem>
-            </Breadcrumb> -->
+            </Breadcrumb>
 
             <Tabs type="card"
               closable
@@ -129,16 +124,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import avatar from '@/assets/logo.png'
 
 export default {
   name: 'App',
   data () {
     return {
       value: [20, 40],
-      isCollapsed: false,
-      avatar: avatar,
-      userName: 'admin'
+      isCollapsed: false
     }
   },
   computed: {
@@ -181,7 +173,6 @@ export default {
       this.$store.dispatch('delete_tab', name)
     },
     route (name) {
-      console.log(name)
       this.$router.push(name)
     }
   }
@@ -201,39 +192,26 @@ export default {
 .ivu-layout
   height 100%
 
-.ivu-layout-header
-  padding 0
-
-.ivu-menu-horizontal
-  height 64px
-  line-height 64px
-
 .layout-logo
-  width 120px
+  width 100px
   height 30px
   background #5b6270
   border-radius 3px
-  position absolute
-  top 17px
-  left 40px
-
-.ivu-avatar-image
-  background-color #fff
+  float left
+  position relative
+  top 15px
+  left 20px
 
 .layout-nav
-  position absolute
-  right 10px
-  top 0
+  width 420px
+  margin 0 auto
+  margin-right 20px
 
 .nav-active
   color #2d8cf0 !important
 
 .ivu-menu-light.ivu-menu-vertical .ivu-menu-item a
   color #495060
-
-.ivu-layout /deep/ .ivu-layout-sider-zero-width-trigger
-  top auto
-  bottom 5px
 
 .layout-con
   height 100%

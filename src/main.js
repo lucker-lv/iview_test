@@ -8,12 +8,14 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import './assets/common.styl'
 import store from './store'
+import iviewArea from 'iview-area'
 
 // import Element from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 
 // Vue.use(Element)
 Vue.use(iView)
+Vue.use(iviewArea)
 
 Vue.config.productionTip = false
 

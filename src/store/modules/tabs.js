@@ -17,7 +17,7 @@ const getters = {
   options: state => state.options,
   deleteIndex: state => state.deleteIndex,
   // pagesArr: state => state.pagesArr,
-  pagesArr: state => state.options.map(function (item) { return item.component }),
+  pagesArr: state => state.options.map(item => item.component),
   fromTabPath: state => state.fromTabPath
 }
 

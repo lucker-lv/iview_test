@@ -12,7 +12,7 @@ const router = new Router({
       name: 'PageHome',
       component: resolve => require(['@/pages/PageHome'], resolve),
       meta: {
-        keepAlive: true, // 是否需要被缓存
+        // keepAlive: true, // 是否需要被缓存
         label: '首页'
       }
     },
@@ -21,7 +21,6 @@ const router = new Router({
       name: 'PageCompanyInfo',
       component: resolve => require(['@/pages/PageCompanyInfo'], resolve),
       meta: {
-        keepAlive: true,
         label: '公司介绍'
       }
     },
@@ -30,7 +29,6 @@ const router = new Router({
       name: 'PageCompanyInfo2',
       component: resolve => require(['@/pages/PageCompanyInfo2'], resolve),
       meta: {
-        keepAlive: true,
         label: '公司介绍2'
       }
     },
@@ -39,10 +37,17 @@ const router = new Router({
       name: 'PageAbout',
       component: resolve => require(['@/pages/PageAbout'], resolve),
       meta: {
-        keepAlive: true,
         label: '关于'
       },
       props: true
+    },
+    {
+      path: '/personalInfo',
+      name: 'PagePersonalInfo',
+      component: resolve => require(['@/pages/PagePersonalInfo'], resolve),
+      meta: {
+        label: '个人中心'
+      }
     },
     {
       path: '/element',
