@@ -118,7 +118,6 @@ export default {
   computed: {
     ...mapGetters({
       options: 'options',
-      // deleteIndex: 'deleteIndex',
       pagesArr: 'pagesArr'
     }),
     menuitemClasses: function () {
@@ -136,18 +135,21 @@ export default {
         this.$store.dispatch('add_tabs', {
           tab: {
             name: to.path,
-            label: to.meta.label
-          },
-          componentName: to.name
+            label: to.meta.label,
+            component: to.name
+          }
         })
       }
     }
   },
   methods: {
     handleTabRemove (name) {
+      let index = this.options.findIndex((value, index) => value.name === name)
       if (name === this.$route.path) {
-        this.$router.push(this.options[this.options.length - 2].name)
+        this.$router.push(this.options[index - 1].name)
       }
+      // alert(index)
+      this.$store.commit('set_delete_index', index)
       this.$store.dispatch('delete_tab', name)
     },
     route (name) {

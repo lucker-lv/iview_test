@@ -3,10 +3,12 @@ const state = {
     label: '首页',
     name: '/',
     closable: false,
+    component: 'PageHome',
     data: {}
   }],
   deleteIndex: '',
-  pagesArr: ['PageHome'],
+  // pagesArr: ['PageHome'],
+  pagesArr: [],
   fromTabPath: '',
   userInfo: {}
 }
@@ -14,31 +16,31 @@ const state = {
 const getters = {
   options: state => state.options,
   deleteIndex: state => state.deleteIndex,
-  pagesArr: state => state.pagesArr,
+  // pagesArr: state => state.pagesArr,
+  pagesArr: state => state.options.map(function (item) { return item.component }),
   fromTabPath: state => state.fromTabPath
 }
 
 const actions = {
   add_tabs ({commit, state}, data) {
     commit('add_tabs', data.tab)
-    if (state.pagesArr.indexOf(data.componentName) < 0 && data.componentName !== null) {
-      commit('add_cache_page', data.componentName)
+    if (state.pagesArr.indexOf(data.tab.component) < 0 && data.tab.component !== null) {
+      commit('add_cache_page', data.tab.component)
     }
   },
   delete_tab ({commit, state}, route) {
-    let index = state.options.findIndex((value, index) => value.name === route)
-    commit('set_delete_index', index)
+    // commit('set_delete_index', index)
     commit('delete_tab')
     commit('delete_cache_page')
     // 删除相同组件不同实例的localstorage数据
-    deleteLCCachePage(route)
+    // deleteLCCachePage(route)
   }
 }
 
-let deleteLCCachePage = (route) => {
-  localStorage.removeItem(route)
-  alert('remove')
-}
+// let deleteLCCachePage = (route) => {
+//   localStorage.removeItem(route)
+//   alert('remove')
+// }
 
 const mutations = {
   // 添加tabs
